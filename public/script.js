@@ -1,42 +1,28 @@
-// Script to handle form submission
-document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form from submitting the default way
+// script.js
 
-    // Collect form data
-    const name = document.querySelector('#name').value;
-    const email = document.querySelector('#email').value;
-    const phone = document.querySelector('#phone').value;
-    const service = document.querySelector('#service').value;
-    const appointmentDate = document.querySelector('#appointment-date').value;
-    const appointmentTime = document.querySelector('#appointment-time').value;
-    const notes = document.querySelector('#notes').value;
+// Function to handle form submission
+document.addEventListener('DOMContentLoaded', function () {
+    const bookingForm = document.querySelector('form[name="booking-form"]');
 
-    // Data to send to your Formspree endpoint
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('phone', phone);
-    formData.append('service', service);
-    formData.append('appointmentDate', appointmentDate);
-    formData.append('appointmentTime', appointmentTime);
-    formData.append('notes', notes);
+    bookingForm.addEventListener('submit', function (event) {
+        event.preventDefault();  // Prevent form from submitting immediately
 
-    // API endpoint (Formspree endpoint)
-    const endpoint = 'https://formspree.io/f/xrbgvblq';
+        // Validate form fields
+        const name = document.getElementById('name');
+        const email = document.getElementById('email');
+        const phone = document.getElementById('phone');
+        const service = document.getElementById('service');
+        const appointmentDate = document.getElementById('appointment-date');
+        const appointmentTime = document.getElementById('appointment-time');
+        
+        if (!name.value || !email.value || !phone.value || !service.value || !appointmentDate.value || !appointmentTime.value) {
+            alert("Please fill in all required fields.");
+            return;  // Stop form submission if validation fails
+        }
 
-    // Send the data to Formspree using fetch
-    fetch(endpoint, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json()) // Assuming the response is in JSON format
-    .then(data => {
-        console.log('Success:', data);
-        // Optionally: Show a confirmation message to the user
-        alert('Thank you for your booking! We will get back to you soon.');
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('There was an error with your submission. Please try again later.');
+        // You can add custom validations here if needed
+
+        // Submit form to Netlify form handling
+        bookingForm.submit();  // Proceed with form submission after validation
     });
 });
